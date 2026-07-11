@@ -1,47 +1,116 @@
-# Dieline → Box
+# 📦 Dieline Box Visualizer
 
-Upload a 2D dieline (cut/crease layout), watch it fold shut into a 3D box, orbit it.
-Built for the SiviQuant Labs build challenge.
+An interactive **React + Three.js** application that converts a **2D box dieline** into a realistic **3D folding box**.
 
-## Run it
+Users can upload a dieline image, generate a 3D model, rotate it freely, and watch the box fold from a flat layout into its final shape.
+
+---
+
+## ✨ Features
+
+* 📤 Upload PNG or JPG dieline images
+* 🧩 Automatic panel detection
+* 📐 Fold line identification
+* 📦 Interactive 3D box generation
+* 🎬 Smooth folding animation
+* 🖱️ Rotate, zoom, and inspect the model
+* 📱 Responsive and clean user interface
+
+---
+
+## 🛠️ Tech Stack
+
+* ⚛️ React
+* ⚡ Vite
+* 🌐 Three.js
+* 🟨 JavaScript
+* 🎨 HTML5 Canvas
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+├── App.jsx                 # Main application
+├── FoldScene.jsx           # Three.js scene & folding animation
+├── dielineParser.js        # Dieline parsing logic
+├── App.css
+├── index.css
+└── main.jsx
+```
+
+---
+
+## 🚀 Getting Started
+
+### 📥 Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd dieline-box
+```
+
+### 📦 Install Dependencies
 
 ```bash
 npm install
+```
+
+### ▶️ Run the Project
+
+```bash
 npm run dev
 ```
 
-Open the printed local URL. The sample dieline loads automatically; use
-**Upload dieline** to try your own PNG/JPG export of a cut file.
+Open the local development URL displayed in your terminal.
 
-## How it works
+---
 
-**`src/dielineParser.js`** reads the image and produces a fold tree:
+## ⚙️ How It Works
 
-1. Rasterize the upload, classify each pixel as background, cut (green),
-   or crease (red) - downsampled with block-min sampling so thin 1-2px
-   lines survive instead of blurring away.
-2. Flood-fill the background to find each enclosed panel's bounding box.
-3. For every pair of touching panels, sample the shared border color.
-   Red = hinged (crease). Green = just adjacent through a cut, no hinge.
-4. Some dielines don't draw a line for every joint at all, so a colorless
-   touch is still kept as a fallback hinge - just lower priority than a
-   real drawn crease.
-5. Build a tree from the largest panel outward, always preferring real
-   crease edges over fallback ones (0-1 BFS).
+### 🖼️ Dieline Parsing
 
-**`src/FoldScene.jsx`** turns that tree into nested Three.js groups, one
-per hinge, each parented to its own parent panel like a real hinge. Every
-panel's fold direction comes from one rule: rotate it so its centroid
-swings toward +Y relative to its own parent's current frame. Because
-Three.js composes parent/child transforms automatically, that single rule
-recursively closes the whole box - nothing about "this is the front" or
-"this is a flap" is hardcoded.
+The uploaded image is analyzed to detect:
 
-Fold progress is one 0→1 value (the scrubber), staggered by tree depth so
-hinges close in sequence, and kept in a ref rather than React state so
-animating doesn't trigger re-renders.
+* 📋 Individual box panels
+* 📏 Fold (crease) lines
+* 🔗 Panel connectivity
 
-## Known limitation
+The parser builds a fold hierarchy that is later used for animation.
 
-PDF upload isn't parsed directly - export/screenshot the dieline as a PNG
-first.
+### 🏗️ 3D Model Generation
+
+Each detected panel is converted into a separate **Three.js** plane. The panels are connected through hinge relationships to recreate the structure of a real folding carton.
+
+### 🎥 Folding Animation
+
+The application rotates connected panels around their hinge edges, creating a smooth animation from a flat dieline to a closed 3D box.
+
+---
+
+## ⚠️ Current Limitations
+
+* 🖼️ Supports PNG and JPG uploads
+* 📄 PDF files should be exported as images before uploading
+* ✨ Best results are achieved with clean, high-contrast dielines
+
+---
+
+## 🚧 Future Improvements
+
+* 📄 Native PDF support
+* 📦 Better handling of complex packaging layouts
+* 🎨 Custom textures and materials
+* 💾 Export generated 3D models
+* 📚 Support for additional box templates
+
+---
+
+## 👨‍💻 Author
+
+**Adi**
+
+Built as part of a **Frontend Engineering Challenge** using **React** and **Three.js**.
+
+⭐ If you found this project useful, consider giving it a star!
