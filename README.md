@@ -4,6 +4,8 @@ An interactive **React + Three.js** application that converts a **2D box dieline
 
 Users can upload a dieline image, generate a 3D model, rotate it freely, and watch the box fold from a flat layout into its final shape.
 
+deploy link : https://vercel.com/adi91/dieline-box-folding
+
 ---
 
 ## ✨ Features
